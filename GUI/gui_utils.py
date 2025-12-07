@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import messagebox
 import math
 
-# استيراد مباشر
 import sys
 import os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "GeometryFunctions"))

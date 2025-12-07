@@ -1,3 +1,4 @@
+#  Malak
 import tkinter as tk
 from tkinter import ttk, messagebox
 import colorsys
@@ -8,7 +9,6 @@ import threading
 import sys
 import os
 
-# إضافة مسارات للاستيراد
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.join(current_dir, "..")
 sys.path.insert(0, project_root)
@@ -16,7 +16,6 @@ sys.path.insert(0, os.path.join(project_root, "GeometryFunctions"))
 sys.path.insert(0, os.path.join(project_root, "RadialStructure"))
 sys.path.insert(0, os.path.join(project_root, "GUI"))
 
-# استيراد الدوال
 from GeometryFunctions.ensureCCW import ensure_ccw
 from GeometryFunctions.isConvex import is_convex
 from GeometryFunctions.distance import distance
@@ -26,7 +25,7 @@ from GeometryFunctions.angle import angle
 
 from RadialStructure.findPolygonWithSteps import find_polygon_with_steps
 from RadialStructure.BuildRadialStructure import build_radial_structure
-# استيراد أجزاء GUI
+
 from GUI.gui_drawing import GUIDrawing
 from GUI.gui_events import GUIEvents
 from GUI.gui_polygon_management import GUIPolygonManagement
@@ -48,7 +47,6 @@ class PolygonSubdivisionGUI(
         self.root.title("Polygon Subdivision Point Location - Enhanced")
         self.root.geometry("1600x1000")
         
-        # Start with two default polygons
         self.polygons = [
             [(100, 100), (300, 80), (350, 200), (250, 320), (100, 280)],
             [(400, 150), (550, 120), (600, 280), (450, 300)]
