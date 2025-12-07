@@ -24,9 +24,8 @@ from GeometryFunctions.pointToLineDistance import point_to_line_distance
 from GeometryFunctions.pointInConvexPolygon import point_in_convex_polygon
 from GeometryFunctions.angle import angle
 
-from RadialStructure.BuildRadialStructure import build_radial_structure
 from RadialStructure.findPolygonWithSteps import find_polygon_with_steps
-
+from RadialStructure.BuildRadialStructure import build_radial_structure
 # استيراد أجزاء GUI
 from GUI.gui_drawing import GUIDrawing
 from GUI.gui_events import GUIEvents

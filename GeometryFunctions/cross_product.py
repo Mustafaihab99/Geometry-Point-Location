@@ -1,3 +1,4 @@
+# fadel
 import math
 
 def cross_product(O, A, B):
