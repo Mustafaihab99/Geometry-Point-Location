@@ -262,8 +262,6 @@ class GUISetup:
                   command=lambda: self._load_example(1), width=10).pack(side=tk.LEFT, padx=1)
         ttk.Button(action_btn_frame, text="Example 2", 
                   command=lambda: self._load_example(2), width=10).pack(side=tk.LEFT, padx=1)
-        ttk.Button(action_btn_frame, text="Reset View", 
-                  command=self._reset_view, width=10).pack(side=tk.LEFT, padx=1)
         
         # Bind keyboard shortcuts
         self.root.bind('<Delete>', self._delete_selected_vertex)

@@ -157,9 +157,3 @@ class GUIUtils:
         self._update_stats()
         
         messagebox.showinfo("Example Loaded", f"Example {num} loaded successfully!")
-    
-    def _reset_view(self):
-        """Reset the view (zoom and pan)."""
-        self.canvas.scale("all", 0, 0, 1, 1)
-        self.canvas.xview_moveto(0)
-        self.canvas.yview_moveto(0)
