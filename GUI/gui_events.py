@@ -11,15 +11,12 @@ class GUIEvents:
         """Handle left click on canvas."""
         x, y = event.x, event.y
         
-        # If in polygon creation mode, add vertices with right-click only
         if self.creating_polygon:
             return
         
-        # If editing a polygon, check for vertex/polygon selection
         if self.editing_polygon and self.editing_polygon_index >= 0:
             poly = self.polygons[self.editing_polygon_index]
             
-            # Check if clicking on a vertex
             for i, (vx, vy) in enumerate(poly):
                 if distance((x, y), (vx, vy)) < 10:
                     self.selected_vertex = (self.editing_polygon_index, i)
@@ -27,7 +24,6 @@ class GUIEvents:
                     self._draw_static()
                     return
             
-            # Check if clicking on polygon center for dragging entire polygon
             cx = sum(p[0] for p in poly) / len(poly)
             cy = sum(p[1] for p in poly) / len(poly)
             if distance((x, y), (cx, cy)) < 15:
@@ -35,14 +31,11 @@ class GUIEvents:
                 self.polygon_drag_offset = (cx - x, cy - y)
                 return
             
-            # Check if clicking near an edge to add a vertex
             for i in range(len(poly)):
                 p1 = poly[i]
                 p2 = poly[(i + 1) % len(poly)]
                 
-                # Check distance from point to line segment
                 if point_to_line_distance((x, y), p1, p2) < 10:
-                    # Add vertex at this position
                     self.polygons[self.editing_polygon_index].insert(i + 1, (x, y))
                     self.selected_vertex = (self.editing_polygon_index, i + 1)
                     self._rebuild_structure()
@@ -50,15 +43,12 @@ class GUIEvents:
                     self._draw_dynamic()
                     return
         
-        # Check if clicking on an existing test point
         for point, _ in self.test_points:
             px, py = point
-            # غيرنا المسافة من 10 ل 8
             if abs(px - x) < 8 and abs(py - y) < 8:
                 self.dragging_point = point
                 return
         
-        # Otherwise, add a new test point
         point = (x, y)
         result, search_steps = find_polygon_with_steps(
             point, self.center, self.angles, 
@@ -70,7 +60,6 @@ class GUIEvents:
         self.search_steps = search_steps
         self.current_step = 0
         
-        # بدل ما نسمي _draw_dynamic بس، نسمي redraw_all
         if hasattr(self, 'redraw_all'):
             self.redraw_all()
         else:
@@ -82,7 +71,6 @@ class GUIEvents:
         """Handle double click to edit polygon."""
         x, y = event.x, event.y
         
-        # Find which polygon was double-clicked
         for i, poly in enumerate(self.processed_polygons):
             if point_in_convex_polygon((x, y), poly):
                 self._start_editing_polygon(i)
@@ -100,14 +88,11 @@ class GUIEvents:
         """Handle dragging."""
         x, y = event.x, event.y
         
-        # Drag test point
         if self.dragging_point:
-            # Find the dragged point and update it
             for i, (point, result) in enumerate(self.test_points):
                 if point == self.dragging_point:
                     new_point = (x, y)
                     
-                    # Recalculate result for new location
                     new_result, new_steps = find_polygon_with_steps(
                         new_point, self.center, self.angles,
                         self.sectors, self.processed_polygons,
@@ -124,7 +109,6 @@ class GUIEvents:
                     self._update_stats()
                     break
         
-        # Drag vertex
         elif self.dragging_vertex:
             poly_idx, vertex_idx = self.dragging_vertex
             if poly_idx < len(self.polygons) and vertex_idx < len(self.polygons[poly_idx]):
@@ -133,21 +117,17 @@ class GUIEvents:
                 self._draw_static()
                 self._draw_dynamic()
         
-        # Drag entire polygon
         elif self.dragging_entire_polygon and self.editing_polygon_index >= 0:
             poly = self.polygons[self.editing_polygon_index]
             dx = x + self.polygon_drag_offset[0]
             dy = y + self.polygon_drag_offset[1]
             
-            # Calculate current center
             current_cx = sum(p[0] for p in poly) / len(poly)
             current_cy = sum(p[1] for p in poly) / len(poly)
             
-            # Calculate translation
             tx = dx - current_cx
             ty = dy - current_cy
             
-            # Move all vertices
             for i in range(len(poly)):
                 vx, vy = poly[i]
                 poly[i] = (vx + tx, vy + ty)
@@ -166,7 +146,6 @@ class GUIEvents:
         """Handle mouse hover for highlighting."""
         new_hover_point = None
         
-        # Check test points
         for point, _ in self.test_points:
             px, py = point
             if abs(px - event.x) < 10 and abs(py - event.y) < 10:

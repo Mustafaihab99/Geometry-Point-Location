@@ -6,7 +6,6 @@ import math
 from turtle import distance
 
 class GUIPolygonManagement:
-    # Polygon creation methods
     def _start_new_polygon(self):
         """Start creating a new polygon."""
         self._stop_editing()
@@ -29,15 +28,12 @@ class GUIPolygonManagement:
                                  f"Polygon needs at least 3 vertices. You have {len(self.current_polygon_points)}.")
             return
         
-        # Save for undo
         self._previous_polygons = self.polygons.copy()
         
-        # Add new polygon
         self.polygons.append(self.current_polygon_points)
         self.creating_polygon = False
         self.current_polygon_points = []
         
-        # Rebuild structure and redraw
         self._rebuild_structure()
         self._draw_static()
         self._draw_dynamic()
@@ -52,7 +48,6 @@ class GUIPolygonManagement:
         self._draw_static()
         self._draw_dynamic()
     
-    # Polygon editing methods
     def _start_editing(self):
         """Start editing mode."""
         if not hasattr(self, 'polygon_listbox'):
@@ -69,7 +64,6 @@ class GUIPolygonManagement:
         if index < 0 or index >= len(self.polygons):
             return
         
-        # Save for undo
         self._previous_polygons = self.polygons.copy()
         
         self._stop_editing()
@@ -77,7 +71,6 @@ class GUIPolygonManagement:
         self.editing_polygon_index = index
         self.selected_vertex = None
         
-        # Select in listbox
         if hasattr(self, 'polygon_listbox'):
             self.polygon_listbox.selection_clear(0, tk.END)
             self.polygon_listbox.selection_set(index)
@@ -117,10 +110,8 @@ class GUIPolygonManagement:
             messagebox.showwarning("Too Few Vertices", "Polygon needs at least 2 vertices.")
             return
         
-        # Save for undo
         self._previous_polygons = self.polygons.copy()
         
-        # Find the longest edge to add vertex at its midpoint
         max_length = -1
         best_index = -1
         
@@ -152,37 +143,28 @@ class GUIPolygonManagement:
         poly_idx, vertex_idx = self.selected_vertex
         
         if poly_idx < len(self.polygons) and vertex_idx < len(self.polygons[poly_idx]):
-            # Check if polygon will still have at least 3 vertices
             if len(self.polygons[poly_idx]) <= 3:
                 messagebox.showwarning("Cannot Delete", "Polygon must have at least 3 vertices.")
                 return
             
-            # Save for undo
             self._previous_polygons = self.polygons.copy()
             
-            # Delete the vertex
             del self.polygons[poly_idx][vertex_idx]
             self.selected_vertex = None
             
-            # Rebuild and redraw
             self._rebuild_structure()
             self._draw_static()
             self._draw_dynamic()
     
-    # Polygon operations
     def _add_random_polygon(self):
         """Add a random convex polygon."""
-        # Save for undo
         self._previous_polygons = self.polygons.copy()
         
-        # Generate random center
         center_x = random.randint(200, 800)
         center_y = random.randint(200, 600)
         
-        # Generate random number of vertices (3 to 7)
         num_vertices = random.randint(3, 7)
         
-        # Generate random convex polygon
         angles = sorted([random.uniform(0, 2*math.pi) for _ in range(num_vertices)])
         radii = [random.uniform(50, 150) for _ in range(num_vertices)]
         
@@ -192,7 +174,6 @@ class GUIPolygonManagement:
             y = center_y + radii[i] * math.sin(angles[i])
             polygon.append((x, y))
         
-        # Ensure counter-clockwise order
         from GeometryFunctions.ensureCCW import ensure_ccw
         polygon = ensure_ccw(polygon)
         
@@ -208,7 +189,6 @@ class GUIPolygonManagement:
     def _clear_all_polygons(self):
         """Clear all polygons."""
         if messagebox.askyesno("Clear All", "Are you sure you want to clear all polygons?"):
-            # Save for undo
             self._previous_polygons = self.polygons.copy()
             
             self.polygons = []
@@ -235,7 +215,6 @@ class GUIPolygonManagement:
         
         index = selection[0]
         if messagebox.askyesno("Delete Polygon", f"Delete polygon {index}?"):
-            # Save for undo
             self._previous_polygons = self.polygons.copy()
             
             self.polygons.pop(index)
@@ -258,18 +237,14 @@ class GUIPolygonManagement:
         new_index = index + direction
         
         if 0 <= new_index < len(self.polygons):
-            # Save for undo
             self._previous_polygons = self.polygons.copy()
             
-            # Swap polygons
             self.polygons[index], self.polygons[new_index] = self.polygons[new_index], self.polygons[index]
             
-            # Update selection
             self._rebuild_structure()
             self.polygon_listbox.selection_clear(0, tk.END)
             self.polygon_listbox.selection_set(new_index)
-            
-            # Update editing index if currently editing
+
             if self.editing_polygon and self.editing_polygon_index == index:
                 self.editing_polygon_index = new_index
             elif self.editing_polygon and self.editing_polygon_index == new_index:

@@ -52,13 +52,11 @@ class PolygonSubdivisionGUI(
             [(400, 150), (550, 120), (600, 280), (450, 300)]
         ]
         
-        # Algorithm data
         self.center = None
         self.angles = None
         self.sectors = None
         self.processed_polygons = None
         
-        # UI state
         self.test_points = []
         self.dragging_point = None
         self.hover_point = None
@@ -67,11 +65,9 @@ class PolygonSubdivisionGUI(
         self.search_steps = []
         self.current_step = 0
         
-        # Polygon creation state
         self.creating_polygon = False
         self.current_polygon_points = []
         
-        # Polygon editing state
         self.editing_polygon = False
         self.editing_polygon_index = -1
         self.selected_vertex = None
@@ -79,19 +75,15 @@ class PolygonSubdivisionGUI(
         self.dragging_entire_polygon = False
         self.polygon_drag_offset = (0, 0)
         
-        # Colors
         self.polygon_colors = self._generate_colors(20)
         
-        # Canvas items
         self.canvas_items = {}
         
-        # UI elements (سيتم تعريفهم في setup_ui)
         self.polygon_listbox = None
         self.info_text = None
         self.stats_text = None
         self.speed_var = None
         
-        # Display options
         self.show_rays_var = None
         self.show_sectors_var = None
         self.show_center_var = None
@@ -99,7 +91,6 @@ class PolygonSubdivisionGUI(
         self.show_search_range_var = None
         self.highlight_editing_var = None
         
-        # Undo stack
         self._previous_polygons = None
         
         self._setup_ui()
@@ -156,11 +147,8 @@ class PolygonSubdivisionGUI(
     
     def redraw_all(self):
         """Redraw everything in correct order."""
-        # Clear everything first
         self.canvas.delete('all')
         
-        # Draw static elements (polygons first)
         self._draw_static()
         
-        # Then draw dynamic elements
         self._draw_dynamic()

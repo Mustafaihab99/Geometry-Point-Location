@@ -8,13 +8,11 @@ from GeometryFunctions.angle import angle
 class GUIDrawing:
     def _draw_static(self):
         """Draw static elements (polygons, center)."""
-        # Clear only static elements
         self.canvas.delete('static')
         
         if not self.processed_polygons:
             return
         
-        # Draw polygons
         for i, poly in enumerate(self.processed_polygons):
             points = []
             for x, y in poly:
@@ -25,7 +23,6 @@ class GUIDrawing:
             outline_color = '#000000'
             outline_width = 2
             
-            # Highlight the polygon being edited
             if self.editing_polygon and i == self.editing_polygon_index and self.highlight_editing_var.get():
                 fill_color = self._blend_color(fill_color, '#FFFF00', 0.3)
                 outline_color = '#FF0000'
@@ -37,12 +34,10 @@ class GUIDrawing:
                                       width=outline_width, 
                                       tags=f'static polygon_{i}')
             
-            # Draw vertices with numbers
             for j, (x, y) in enumerate(poly):
                 vertex_color = '#000000'
                 vertex_size = 4
                 
-                # Highlight selected vertex
                 if self.editing_polygon and i == self.editing_polygon_index and self.selected_vertex == (i, j):
                     vertex_color = '#FF0000'
                     vertex_size = 6
@@ -57,10 +52,8 @@ class GUIDrawing:
                                        fill=vertex_color, 
                                        font=('Arial', 8),
                                        tags='static vertex_label')
-            
-            # Draw polygon center for dragging
+        
             if self.editing_polygon and i == self.editing_polygon_index:
-                # Calculate polygon center
                 cx = sum(p[0] for p in poly) / len(poly)
                 cy = sum(p[1] for p in poly) / len(poly)
                 
@@ -75,7 +68,6 @@ class GUIDrawing:
                                        font=('Arial', 8, 'bold'),
                                        tags='static centerlabel_{i}')
         
-        # Draw center of radial structure
         if self.show_center_var.get() and self.center:
             cx, cy = self.center
             self.canvas.create_oval(cx-6, cy-6, cx+6, cy+6, 
@@ -89,13 +81,11 @@ class GUIDrawing:
                                    font=('Arial', 10, 'bold'),
                                    tags='static center_label')
         
-        # Draw polygon being created
         if self.creating_polygon and len(self.current_polygon_points) > 0:
             points = []
             for x, y in self.current_polygon_points:
                 points.extend([x, y])
             
-            # Draw partial polygon with dashed line
             if len(self.current_polygon_points) > 1:
                 self.canvas.create_line(points, 
                                        fill='#FF00FF', 
@@ -103,7 +93,6 @@ class GUIDrawing:
                                        dash=(4, 2),
                                        tags='static creation_line')
             
-            # Draw vertices of polygon being created
             for j, (x, y) in enumerate(self.current_polygon_points):
                 self.canvas.create_oval(x-5, y-5, x+5, y+5, 
                                        fill='#FF00FF', 
@@ -118,7 +107,6 @@ class GUIDrawing:
     
     def _draw_dynamic(self):
         """Draw dynamic elements (rays, sectors, animation)."""
-        # Clear dynamic elements
         self.canvas.delete('dynamic')
         self.canvas.delete('animation')
         
@@ -127,25 +115,21 @@ class GUIDrawing:
         
         cx, cy = self.center
         
-        # Draw test points أولاً علشان ميغطوش على المضلعات
         self._draw_test_points()
         
-        # Draw angle sectors بعد كدا
         if self.show_sectors_var.get():
             self._draw_sectors()
         
-        # Draw angle rays
         if self.show_rays_var.get():
             self._draw_rays()
         
-        # Draw binary search animation
         if self.show_animation_var.get() and self.search_steps and self.current_step < len(self.search_steps):
             self._draw_binary_search_animation()
     
     def _draw_sectors(self):
         """Draw angle sectors with colors - lightly."""
         if not self.show_sectors_var.get():
-            return  # مترسمش حاجة لو المستخدم مش عاوزها
+            return 
         
         radius = 500
         cx, cy = self.center
@@ -162,12 +146,9 @@ class GUIDrawing:
             start_deg = math.degrees(a1)
             extent_deg = math.degrees(a2 - a1)
             
-            # فقط رسمناهم كدائرة فاتحة
             if face >= 0 and face < len(self.processed_polygons):
-                # استخدم 10% opacity فقط
                 color_index = face % len(self.polygon_colors)
                 color = self.polygon_colors[color_index]
-                # خليها فاتحة قوي
                 alpha_color = self._blend_color(color, '#FFFFFF', 0.95)
                 
                 x1, y1 = cx - radius, cy - radius
@@ -176,7 +157,7 @@ class GUIDrawing:
                 self.canvas.create_arc(x1, y1, x2, y2, 
                                       start=start_deg, extent=extent_deg,
                                       fill=alpha_color, 
-                                      outline='',  # من غير outline
+                                      outline='',
                                       width=0,
                                       tags='dynamic sector')
     
@@ -193,7 +174,6 @@ class GUIDrawing:
                                    fill='#CCCCCC', width=1, 
                                    dash=(2, 4), tags=f'dynamic ray_{i}')
             
-            # Angle labels
             label_x = cx + 350 * math.cos(ang)
             label_y = cy + 350 * math.sin(ang)
             self.canvas.create_text(label_x, label_y, 
@@ -211,8 +191,8 @@ class GUIDrawing:
                 color_index = result % len(self.polygon_colors)
                 color = self.polygon_colors[color_index]
                 text = f'P{result}'
-            elif result == -2:  # Special case: point is in polygon being created
-                color = '#FF00FF'  # Purple/magenta color for creation polygon
+            elif result == -2: 
+                color = '#FF00FF'
                 text = 'IN CREATION'
             else:
                 color = '#999999'

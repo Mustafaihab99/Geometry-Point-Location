@@ -2,7 +2,6 @@
 import sys
 import os
 
-# إضافة المسارات إلى النظام
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "GUI"))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "GeometryFunctions"))

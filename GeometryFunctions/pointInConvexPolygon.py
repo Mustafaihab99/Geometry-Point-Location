@@ -2,10 +2,8 @@
 import sys
 import os
 
-# إضافة مسار GeometryFunctions للاستيراد
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
 
-# استيراد cross_product
 from cross_product import cross_product
 
 def point_in_convex_polygon(point, poly):

@@ -73,7 +73,6 @@ class GUIUtils:
         stats += f"║     Statistics & Animation     ║\n"
         stats += f"╚══════════════════════════════════╝\n\n"
         
-        # Test statistics
         stats += f"📈 Test Statistics:\n"
         stats += f"   Total Tests: {len(self.test_points)}\n"
         
@@ -94,13 +93,11 @@ class GUIUtils:
             else:
                 stats += f"   Polygon {key}: {counts[key]}\n"
         
-        # Polygon statistics
         stats += f"\n📊 Polygon Statistics:\n"
         for i, poly in enumerate(self.polygons):
             convex = "✓" if is_convex(poly) else "✗"
             stats += f"   Polygon {i}: {len(poly)} vertices {convex}\n"
         
-        # Animation steps
         if self.search_steps and self.current_step < len(self.search_steps):
             stats += f"\n🔄 Binary Search Steps ({self.current_step + 1}/{len(self.search_steps)}):\n"
             
@@ -115,7 +112,6 @@ class GUIUtils:
             else:
                 stats += f"   Decision: Target > Mid → Search Left\n"
             
-            # Show all steps
             stats += f"\n📋 All Steps:\n"
             for i, s in enumerate(self.search_steps):
                 marker = "▶" if i == self.current_step else " "
@@ -127,7 +123,6 @@ class GUIUtils:
     
     def _load_example(self, num):
         """Load example polygon sets."""
-        # Save current state for undo
         self._previous_polygons = self.polygons.copy()
         
         if num == 1:

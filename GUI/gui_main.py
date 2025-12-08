@@ -18,43 +18,36 @@ class PolygonSubdivisionGUI:
         self.root.title("Polygon Subdivision Point Location - Enhanced")
         self.root.geometry("1600x1000")
         
-        # Start with two default polygons
         self.polygons = [
             [(100, 100), (300, 80), (350, 200), (250, 320), (100, 280)],
             [(400, 150), (550, 120), (600, 280), (450, 300)]
         ]
         
-        # Algorithm data
         self.center = None
         self.angles = None
         self.sectors = None
         self.processed_polygons = None
         
-        # UI state
         self.test_points = []
         self.dragging_point = None
         self.hover_point = None
         self.animation_running = False
-        self.animation_speed = 500  # milliseconds per step
+        self.animation_speed = 500
         self.search_steps = []
         self.current_step = 0
         
-        # Polygon creation state
         self.creating_polygon = False
         self.current_polygon_points = []
         
-        # Polygon editing state
         self.editing_polygon = False
         self.editing_polygon_index = -1
-        self.selected_vertex = None  # (polygon_index, vertex_index)
+        self.selected_vertex = None 
         self.dragging_vertex = None
         self.dragging_entire_polygon = False
         self.polygon_drag_offset = (0, 0)
         
-        # Colors
-        self.polygon_colors = self._generate_colors(20)  # Generate enough colors
+        self.polygon_colors = self._generate_colors(20)
         
-        # Canvas items for performance
         self.canvas_items = {}
         
         self._setup_ui()
@@ -74,12 +67,10 @@ class PolygonSubdivisionGUI:
     
     def _blend_color(self, color1, color2, ratio):
         """Blend two colors."""
-        # Convert hex to RGB
         def hex_to_rgb(hex_color):
             hex_color = hex_color.lstrip('#')
             return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
         
-        # Convert RGB to hex
         def rgb_to_hex(rgb):
             return '#%02x%02x%02x' % rgb
         
@@ -110,6 +101,5 @@ def _update_polygon_list(self):
             convex_status = "✓" if is_convex(poly) else "✗"
             self.polygon_listbox.insert(tk.END, f"Polygon {i}: {len(poly)} vertices {convex_status}")
     
-    # Update the count label
     if hasattr(self, 'polygon_count_label'):
         self.polygon_count_label.config(text=f"Polygons: {len(self.polygons)}")

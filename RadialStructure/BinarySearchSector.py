@@ -12,7 +12,6 @@ def binary_search_sector(ang, angles):
     ang = ang % (2 * math.pi)
     n = len(angles)
 
-    # special case: before first or after last
     if ang >= angles[-1] or ang < angles[0]:
         search_steps.append({
             "left": None,
@@ -29,7 +28,6 @@ def binary_search_sector(ang, angles):
     while left <= right:
         mid = (left + right) // 2
 
-        # record current state
         search_steps.append({
             "left": left,
             "right": right,
