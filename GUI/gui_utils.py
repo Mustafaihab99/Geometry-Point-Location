@@ -23,7 +23,7 @@ class GUIUtils:
         info += f"║   Radial Structure Information   ║\n"
         info += f"╚═══════════════════════════════════════╝\n\n"
         
-        info += f"• Total Polygons: {len(self.processed_polygons)}\n"
+        info += f"• Total Polygons: {len(self.polygons)}\n"
         info += f"• Center Point: ({self.center[0]:.1f}, {self.center[1]:.1f})\n"
         info += f"• Number of Angles/Sectors: {len(self.angles)}\n"
         

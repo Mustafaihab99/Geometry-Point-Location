@@ -102,9 +102,14 @@ class PolygonSubdivisionGUI:
             build_radial_structure(self.polygons)
         self._update_polygon_list()
     
-    def _update_polygon_list(self):
-        """Update polygon list."""
+def _update_polygon_list(self):
+    """Update polygon list."""
+    if hasattr(self, 'polygon_listbox'):
         self.polygon_listbox.delete(0, tk.END)
         for i, poly in enumerate(self.polygons):
             convex_status = "✓" if is_convex(poly) else "✗"
             self.polygon_listbox.insert(tk.END, f"Polygon {i}: {len(poly)} vertices {convex_status}")
+    
+    # Update the count label
+    if hasattr(self, 'polygon_count_label'):
+        self.polygon_count_label.config(text=f"Polygons: {len(self.polygons)}")

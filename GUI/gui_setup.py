@@ -96,15 +96,18 @@ class GUISetup:
         ttk.Button(quick_btn_frame, text="Clear All", 
                   command=self._clear_all_polygons, width=8).pack(side=tk.LEFT, padx=1)
         
-        # Current polygons list - compact
+        # Current polygons list - compact - CHANGED TO ALL GRID
         list_frame = ttk.Frame(poly_frame)
         list_frame.grid(row=3, column=0, columnspan=4, sticky=tk.EW, padx=2, pady=5)
         
-        ttk.Label(list_frame, text=f"Polygons: {len(self.polygons)}", font=('Arial', 9)).pack(anchor=tk.W)
+        # Listbox with grid
         self.polygon_listbox = tk.Listbox(list_frame, height=4, font=('Arial', 8))
-        self.polygon_listbox.pack(fill=tk.X, pady=2)
+        self.polygon_listbox.grid(row=1, column=0, sticky=tk.EW, pady=2)
         self.polygon_listbox.bind('<<ListboxSelect>>', self._on_polygon_select)
         self._update_polygon_list()
+        
+        # Make list_frame expand
+        list_frame.columnconfigure(0, weight=1)
         
         # Compact polygon list buttons
         poly_list_btn_frame = ttk.Frame(poly_frame)
